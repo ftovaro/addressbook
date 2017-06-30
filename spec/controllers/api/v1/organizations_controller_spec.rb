@@ -23,7 +23,7 @@ require 'rails_helper'
 # removed from Rails core in Rails 5, but can be added back in via the
 # `rails-controller-testing` gem.
 
-RSpec.describe OrganizationsController, type: :controller do
+RSpec.describe Api::V1::OrganizationsController, type: :controller do
 
   # This should return the minimal set of attributes required to create a valid
   # Organization. As you add validations to Organization, be sure to
