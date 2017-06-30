@@ -29,10 +29,12 @@ gem 'devise_token_auth'
 
 gem 'omniauth'
 
+#https://github.com/guard/listen/issues/431
+gem "rb-fsevent", "0.9.8"
 
 group :development, :test do
   gem 'pry'
-  gem 'rspec'
+  gem 'rspec-rails', '~> 3.6.0'
   gem 'factory_girl'
   gem 'faker'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
