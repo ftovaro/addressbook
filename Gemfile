@@ -35,7 +35,7 @@ gem "rb-fsevent", "0.9.8"
 group :development, :test do
   gem 'pry'
   gem 'rspec-rails', '~> 3.6.0'
-  gem 'factory_girl'
+  gem 'factory_girl_rails', '~> 4.8.0'
   gem 'faker'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
