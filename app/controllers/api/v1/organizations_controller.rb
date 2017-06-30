@@ -19,7 +19,7 @@ module Api::V1
       @organization = Organization.new(organization_params)
 
       if @organization.save
-        render json: @organization, status: :created, location: @organization
+        render json: @organization, status: :created
       else
         render json: @organization.errors, status: :unprocessable_entity
       end
@@ -37,6 +37,7 @@ module Api::V1
     # DELETE /organizations/1
     def destroy
       @organization.destroy
+      render json: {message: 'success'}, status: :ok
     end
 
     private

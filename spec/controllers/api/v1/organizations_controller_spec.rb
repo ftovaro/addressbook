@@ -29,11 +29,11 @@ RSpec.describe Api::V1::OrganizationsController, type: :controller do
   # Organization. As you add validations to Organization, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    attributes_for :organization
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    attributes_for(:organization, name: '')
   }
 
   # This should return the minimal set of values that should be in the session
@@ -70,7 +70,6 @@ RSpec.describe Api::V1::OrganizationsController, type: :controller do
         post :create, params: {organization: valid_attributes}, session: valid_session
         expect(response).to have_http_status(:created)
         expect(response.content_type).to eq('application/json')
-        expect(response.location).to eq(organization_url(Organization.last))
       end
     end
 
@@ -87,14 +86,17 @@ RSpec.describe Api::V1::OrganizationsController, type: :controller do
   describe "PUT #update" do
     context "with valid params" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        attributes_for(:organization, name: 'Felipe')
       }
 
       it "updates the requested organization" do
         organization = Organization.create! valid_attributes
         put :update, params: {id: organization.to_param, organization: new_attributes}, session: valid_session
         organization.reload
-        skip("Add assertions for updated state")
+        expect(response).to have_http_status(:ok)
+        expect(response.content_type).to eq('application/json')
+        response_body = JSON.parse(response.body)
+        expect(response_body["name"]).to eq "Felipe"
       end
 
       it "renders a JSON response with the organization" do
