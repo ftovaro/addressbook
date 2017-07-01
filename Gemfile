@@ -32,6 +32,8 @@ gem 'omniauth'
 #https://github.com/guard/listen/issues/431
 gem "rb-fsevent", "0.9.8"
 
+gem 'rolify', '~> 5.1.0'
+
 group :development, :test do
   gem 'pry'
   gem 'rspec-rails', '~> 3.6.0'
