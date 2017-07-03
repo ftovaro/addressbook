@@ -38,6 +38,7 @@ Rails.application.configure do
   config.active_record.migration_error = :page_load
 
   ENV['FIREBASE_URL'] = "https://testproject-6fcfc.firebaseio.com/"
+  ENV['FIREBASE_KEY'] = "WjemOrQ3r15qYkDvlM0MrZph86qVDA2U83We2ahj"
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true

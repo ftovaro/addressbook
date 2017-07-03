@@ -22,12 +22,6 @@ module Api::V1
 
       if @organization.save
         @organization.assign_user current_api_v1_user
-        unless response.body.nil?
-          render json: @organization, status: :created
-        else
-          render json: { message: 'Organization saved in DB but error in Firebase' },
-                         status: :unprocessable_entity
-        end
       else
         render json: @organization.errors, status: :unprocessable_entity
       end
@@ -35,14 +29,7 @@ module Api::V1
 
     # PATCH/PUT /organizations/1
     def update
-      unless @organization.update(organization_params)
-        response = @organization.update_firebase_slot
-        unless response.body.nil?
-          render json: @organization
-        else
-          render json: { message: 'Organization updated in DB but error in Firebase' },
-                         status: :unprocessable_entity
-        end
+      if @organization.update(organization_params)
       else
         render json: @organization.errors, status: :unprocessable_entity
       end
@@ -50,7 +37,6 @@ module Api::V1
 
     # DELETE /organizations/1
     def destroy
-      @organization.delete_firebase_slot
       @organization.destroy
       render json: { message: 'Organization deleted' }, status: :ok
     end
@@ -75,7 +61,7 @@ module Api::V1
 
       def validate_user!
         unless current_api_v1_user.organizations.ids.include? params[:id].to_i
-          render json: { status: 'error', errors: ["You dont have access here"] },
+          render json: { status: 'error', errors: ["You are not allowed to manage this organization"] },
                  status: :unprocessable_entity
         end
       end

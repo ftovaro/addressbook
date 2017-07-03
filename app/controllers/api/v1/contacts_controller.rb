@@ -9,7 +9,7 @@ module Api::V1
     unless response.body.nil?
       render json: response.body
     else
-      render json: { message: 'Could not show contacts' }, status: :unprocessable_entity
+      render json: { status: 'error', errors: ["Could not show contacts"] }, status: :unprocessable_entity
     end
   end
 
@@ -18,17 +18,17 @@ module Api::V1
     unless response.blank?
       render json: response
     else
-      render json: { message: 'Could not show contacts' }, status: :unprocessable_entity
+      render json: { status: 'error', errors: ["Could not show contacts"] }, status: :unprocessable_entity
     end
   end
 
   # GET /contacts/1
   def show
-    response = Contact.show_contact params[:org_id], params[:contact_id]
+    response = Contact.show_contact params[:contact_id]
     unless response.body.nil?
       render json: response.body
     else
-      render json: { message: 'Could not show contact' }, status: :unprocessable_entity
+      render json: { status: 'error', errors: ["Could not show contact"] }, status: :unprocessable_entity
     end
   end
 
@@ -38,7 +38,7 @@ module Api::V1
     unless response.body.nil?
       render json: response.body, status: :created
     else
-      render json: { message: 'Could not create contact' }, status: :unprocessable_entity
+      render json: { status: 'error', errors: ["Could not create contact"] }, status: :unprocessable_entity
     end
   end
 
@@ -48,18 +48,14 @@ module Api::V1
     unless response.body.nil?
       render json: response.body
     else
-      render json: { message: 'Could not update contact' }, status: :unprocessable_entity
+      render json: { status: 'error', errors: ["Could not update contact"] }, status: :unprocessable_entity
     end
   end
 
   # DELETE /contacts/1
   def destroy
-    response = Contact.delete_contact params[:org_id], params[:contact_id]
-    unless response.body.nil?
-      render json: { message: "contact deleted" }
-    else
-      render json: { message: 'Could not delete contact' }, status: :unprocessable_entity
-    end
+    response = Contact.delete_contact params[:contact_id]
+    render json: { message: "Contact deleted" }
   end
 
   private
@@ -71,7 +67,8 @@ module Api::V1
 
     def validate_user!
       unless current_api_v1_user.organizations.ids.include? params[:org_id].to_i
-        render json: { message: 'You dont have access here' }, status: :unauthorized
+        render json: { status: 'error', errors: ["You are not allowed to manage contacts in this organization"] },
+               status: :unprocessable_entity
       end
     end
   end
