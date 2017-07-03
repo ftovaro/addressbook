@@ -7,7 +7,7 @@ class Organization < ApplicationRecord
     Firebase::Client.new(ENV['FIREBASE_URL']).update("organizations/#{id}", { name: "#{name}" })
   end
 
-  def self.delete_firebase_slot
+  def delete_firebase_slot
     Firebase::Client.new(ENV['FIREBASE_URL']).delete("organizations/#{id}")
   end
 

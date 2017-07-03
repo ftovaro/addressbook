@@ -68,13 +68,15 @@ module Api::V1
 
       def authenticate_admin!
         unless current_api_v1_user.has_role?(:admin)
-          render json: { message: 'You are not allowed to manage organizations' }, status: :unauthorized
+          render json: { status: 'error', errors: ["You are not allowed to manage organizations"] },
+                 status: :unprocessable_entity
         end
       end
 
       def validate_user!
         unless current_api_v1_user.organizations.ids.include? params[:id].to_i
-          render json: { message: 'You dont have access here' }, status: :unauthorized
+          render json: { status: 'error', errors: ["You dont have access here"] },
+                 status: :unprocessable_entity
         end
       end
   end
