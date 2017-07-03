@@ -6,7 +6,6 @@ module Api::V1::Overrides
     protected
     def assign_organizations
       @resource.organizations = @organizations
-      binding.pry
     end
 
     def check_orgs_exist
