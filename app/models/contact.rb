@@ -1,7 +1,7 @@
 class Contact < ApplicationRecord
 
   def self.list_all_contacts current_api_v1_user
-    firebase = Firebase::Client.new(ENV['firebase_url'])
+    firebase = Firebase::Client.new(ENV['FIREBASE_URL'])
     response = []
     current_api_v1_user.organizations.ids.each do |id|
       response << firebase.get("organizations/#{id}/contacts").body
@@ -10,22 +10,22 @@ class Contact < ApplicationRecord
   end
 
   def self.list_organization_contacts org_id
-    firebase = Firebase::Client.new(ENV['firebase_url'])
+    firebase = Firebase::Client.new(ENV['FIREBASE_URL'])
     firebase.get("organizations/#{org_id}/contacts")
   end
 
   def self.create_contact contact, org_id
-    firebase = Firebase::Client.new(ENV['firebase_url'])
+    firebase = Firebase::Client.new(ENV['FIREBASE_URL'])
     firebase.push("organizations/#{org_id}/contacts", format_contact(contact))
   end
 
   def self.show_contact org_id, contact_id
-    firebase = Firebase::Client.new(ENV['firebase_url'])
+    firebase = Firebase::Client.new(ENV['FIREBASE_URL'])
     firebase.get("organizations/#{org_id}/contacts/#{contact_id}")
   end
 
   def self.update_contact contact, org_id, contact_id
-    firebase = Firebase::Client.new(ENV['firebase_url'])
+    firebase = Firebase::Client.new(ENV['FIREBASE_URL'])
     response = firebase.get("organizations/#{org_id}/contacts/#{contact_id}")
     if response.body.nil?
       response.success = false
@@ -35,7 +35,7 @@ class Contact < ApplicationRecord
   end
 
   def self.delete_contact org_id, contact_id
-    firebase = Firebase::Client.new(ENV['firebase_url'])
+    firebase = Firebase::Client.new(ENV['FIREBASE_URL'])
     firebase.delete("organizations/#{org_id}/contacts/#{contact_id}")
   end
 
