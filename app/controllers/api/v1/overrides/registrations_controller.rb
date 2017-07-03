@@ -10,13 +10,15 @@ module Api::V1::Overrides
 
     def check_orgs_exist
       if params[:organizations_ids].blank?
-        render json: { status: 'error', errors: ["Organizations not specified"] }
+        render json: { status: 'error', errors: ["Organizations not specified"] },
+               status: :unprocessable_entity
         return
       end
       begin
         @organizations = Organization.find(params[:organizations_ids])
       rescue ActiveRecord::RecordNotFound
-        render json: { status: 'error', errors: ["One or more organizations ids weren't found"] }
+        render json: { status: 'error', errors: ["One or more organizations ids weren't found"] },
+               status: :unprocessable_entity
       end
     end
   end

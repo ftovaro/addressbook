@@ -21,6 +21,7 @@ module Api::V1
       @organization = Organization.new(organization_params)
 
       if @organization.save
+        @organization.assign_user current_api_v1_user
         unless response.body.nil?
           render json: @organization, status: :created
         else
