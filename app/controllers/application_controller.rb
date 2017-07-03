@@ -2,6 +2,10 @@ class ApplicationController < ActionController::API
   include DeviseTokenAuth::Concerns::SetUserByToken
   before_action :configure_permitted_parameters, if: :devise_controller?
 
+  def index
+    render json: { message: "This is an Address Book created to test my skills in RoR, enjoy it!" }
+  end
+
   protected
 
   def configure_permitted_parameters
