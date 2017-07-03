@@ -11,12 +11,12 @@ class Organization < ApplicationRecord
     Firebase::Client.new(ENV['FIREBASE_URL']).delete("organizations/#{id}")
   end
 
+  def assign_user current_api_v1_user
+    self.users.push(current_api_v1_user)
+  end
+
   private
   def init_firebase_slot
     Firebase::Client.new(ENV['FIREBASE_URL']).set("organizations/#{id}", { name: "#{name}" })
-  end
-
-  def assign_user current_api_v1_user
-    self.users.push(current_api_v1_user)
   end
 end
