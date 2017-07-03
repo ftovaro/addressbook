@@ -9,6 +9,10 @@ module Api::V1::Overrides
     end
 
     def check_orgs_exist
+      if params[:organizations_ids].blank?
+        render json: { status: 'error', errors: ["Organizations not specified"] }
+        return
+      end
       begin
         @organizations = Organization.find(params[:organizations_ids])
       rescue ActiveRecord::RecordNotFound
