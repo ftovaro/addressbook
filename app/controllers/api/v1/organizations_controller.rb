@@ -3,6 +3,7 @@ module Api::V1
     before_action :authenticate_api_v1_user!, except: [:index]
     before_action :authenticate_admin!, except: [:index]
     before_action :set_organization, only: [:show, :update, :destroy]
+    before_action :validate_user!, except: [:index, :create]
 
     # GET /organizations
     def index
@@ -21,7 +22,11 @@ module Api::V1
       @organization = Organization.new(organization_params)
 
       if @organization.save
-        render json: @organization, status: :created
+        unless response.body.nil?
+          render json: @organization, status: :created
+        else
+          render json: { message: 'Organization saved in DB but error in Firebase' }, status: :unprocessable_entity
+        end
       else
         render json: @organization.errors, status: :unprocessable_entity
       end
@@ -29,8 +34,13 @@ module Api::V1
 
     # PATCH/PUT /organizations/1
     def update
-      if @organization.update(organization_params)
-        render json: @organization
+      unless @organization.update(organization_params)
+        response = @organization.update_firebase_slot
+        if response.body.nil?
+          render json: @organization
+        else
+          render json: response.body, status: :unprocessable_entity
+        end
       else
         render json: @organization.errors, status: :unprocessable_entity
       end
@@ -38,8 +48,9 @@ module Api::V1
 
     # DELETE /organizations/1
     def destroy
+      @organization.delete_firebase_slot
       @organization.destroy
-      render json: {message: 'success'}, status: :ok
+      render json: { message: 'Organization deleted' }, status: :ok
     end
 
     private
@@ -54,9 +65,15 @@ module Api::V1
       end
 
       def authenticate_admin!
-       unless current_api_v1_user.has_role?(:admin)
-         render json: { message: 'You are not allowed to manage organizations' }, status: :unauthorized
-       end
+        unless current_api_v1_user.has_role?(:admin)
+          render json: { message: 'You are not allowed to manage organizations' }, status: :unauthorized
+        end
+      end
+
+      def validate_user!
+        unless current_api_v1_user.organizations.ids.include? params[:id].to_i
+          render json: { message: 'You dont have access here' }, status: :unauthorized
+        end
       end
   end
 end

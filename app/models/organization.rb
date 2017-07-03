@@ -1,17 +1,25 @@
 class Organization < ApplicationRecord
   has_and_belongs_to_many :users
   validates :name, presence: true
-  after_create :init_firebase_slot
+  after_create :init_firebase_slot, :assign_user
+
+  def update_firebase_slot
+    firebase = Firebase::Client.new(ENV['firebase_url'])
+    firebase.update("organizations/#{id}", { name: "#{name}" })
+  end
+
+  def self.delete_firebase_slot
+    firebase = Firebase::Client.new(ENV['firebase_url'])
+    firebase.delete("organizations/#{id}")
+  end
 
   private
   def init_firebase_slot
     firebase = Firebase::Client.new(ENV['firebase_url'])
-    response = firebase.push("organizations/#{id}", { name: "#{name}" })
-    if response.success?
-      self.firebase_id = response.body["name"]
-      self.save
-    else
-      #TODO Indicate user organization couldn't be saved
-    end
+    firebase.set("organizations/#{id}", { name: "#{name}" })
+  end
+
+  def assign_user
+    self.users = current_api_v1_user
   end
 end
