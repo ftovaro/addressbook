@@ -8,7 +8,6 @@ module Api::V1
     # GET /organizations
     def index
       @organizations = Organization.all
-
       render json: @organizations
     end
 
@@ -25,7 +24,8 @@ module Api::V1
         unless response.body.nil?
           render json: @organization, status: :created
         else
-          render json: { message: 'Organization saved in DB but error in Firebase' }, status: :unprocessable_entity
+          render json: { message: 'Organization saved in DB but error in Firebase' },
+                         status: :unprocessable_entity
         end
       else
         render json: @organization.errors, status: :unprocessable_entity
@@ -36,10 +36,11 @@ module Api::V1
     def update
       unless @organization.update(organization_params)
         response = @organization.update_firebase_slot
-        if response.body.nil?
+        unless response.body.nil?
           render json: @organization
         else
-          render json: response.body, status: :unprocessable_entity
+          render json: { message: 'Organization updated in DB but error in Firebase' },
+                         status: :unprocessable_entity
         end
       else
         render json: @organization.errors, status: :unprocessable_entity
