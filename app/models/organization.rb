@@ -4,19 +4,16 @@ class Organization < ApplicationRecord
   after_create :init_firebase_slot, :assign_user
 
   def update_firebase_slot
-    firebase = Firebase::Client.new(ENV['FIREBASE_URL'])
-    firebase.update("organizations/#{id}", { name: "#{name}" })
+    Firebase::Client.new(ENV['FIREBASE_URL']).update("organizations/#{id}", { name: "#{name}" })
   end
 
   def self.delete_firebase_slot
-    firebase = Firebase::Client.new(ENV['FIREBASE_URL'])
-    firebase.delete("organizations/#{id}")
+    Firebase::Client.new(ENV['FIREBASE_URL']).delete("organizations/#{id}")
   end
 
   private
   def init_firebase_slot
-    firebase = Firebase::Client.new(ENV['FIREBASE_URL'])
-    firebase.set("organizations/#{id}", { name: "#{name}" })
+    Firebase::Client.new(ENV['FIREBASE_URL']).set("organizations/#{id}", { name: "#{name}" })
   end
 
   def assign_user
