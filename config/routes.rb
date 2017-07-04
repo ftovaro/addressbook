@@ -12,6 +12,9 @@ Rails.application.routes.draw do
       get '/organization/:org_id/contacts/:contact_id', to: 'contacts#show'
       put '/organization/:org_id/contacts/:contact_id', to: 'contacts#update'
       delete '/organization/:org_id/contacts/:contact_id', to: 'contacts#destroy'
+
+      #Bonus
+      post '/organization/send_contacts', to: 'contacts#send_email'
     end
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

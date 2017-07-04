@@ -2,16 +2,30 @@ class Contact < ApplicationRecord
 
   def self.list_all_contacts current_api_v1_user
     firebase = Firebase::Client.new(ENV['FIREBASE_URL'], ENV['FIREBASE_KEY'])
-    response = []
+    result = []
     current_api_v1_user.organizations.ids.each do |id|
-      response << firebase.get("contacts", orderBy: '"organization_id"', equalTo: id).body
+      response = firebase.get("contacts", orderBy: '"organization_id"', equalTo: id).body
+      unless response.blank?
+        response.each do |id, content|
+          content['id'] = id
+          result.push(content)
+        end
+      end
     end
-    response
+    result
   end
 
   def self.list_organization_contacts org_id
-    Firebase::Client.new(ENV['FIREBASE_URL'], ENV['FIREBASE_KEY']).
-                            get("contacts", orderBy: '"organization_id"', equalTo: org_id)
+    result = []
+    response = Firebase::Client.new(ENV['FIREBASE_URL'], ENV['FIREBASE_KEY']).
+                                get("contacts", orderBy: '"organization_id"', equalTo: org_id).body
+    unless response.blank?
+      response.each do |id, content|
+        content['id'] = id
+        result.push(content)
+      end
+    end
+    result
   end
 
   def self.create_contact contact, org_id
@@ -36,6 +50,11 @@ class Contact < ApplicationRecord
 
   def self.delete_contact contact_id
     Firebase::Client.new(ENV['FIREBASE_URL'], ENV['FIREBASE_KEY']).delete("contacts/#{contact_id}")
+  end
+
+  def self.send_contact email, current_api_v1_user
+    contacts = Contact.list_all_contacts current_api_v1_user
+    Contact::ContactSender.send_email contacts, email
   end
 
   def self.format_contact contact, org_id

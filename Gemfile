@@ -36,6 +36,10 @@ gem 'rolify', '~> 5.1.0'
 
 gem 'firebase', '~> 0.2.6'
 
+gem 'axlsx'
+
+gem 'axlsx_rails'
+
 group :development, :test do
   gem 'pry'
   gem 'rspec-rails', '~> 3.6.0'

@@ -1,13 +1,14 @@
 module Api::V1
   class ContactsController < ApplicationController
   before_action :authenticate_api_v1_user!
+  #Except for list because I do the validation inside method.
   before_action :validate_user!, except: [:list]
 
   # GET /contacts
   def index
     response = Contact.list_organization_contacts params[:org_id]
-    unless response.body.nil?
-      render json: response.body
+    unless response.blank?
+      render json: response
     else
       render json: { status: 'error', errors: ["Could not show contacts"] }, status: :unprocessable_entity
     end
@@ -19,6 +20,15 @@ module Api::V1
       render json: response
     else
       render json: { status: 'error', errors: ["Could not show contacts"] }, status: :unprocessable_entity
+    end
+  end
+
+  def send_email
+    begin
+      Contact.send_contact params[:email], current_api_v1_user
+      render json: { message: "Contacts sent to #{params[:email]}" }
+    rescue Exception
+      render json: { status: 'error', errors: ["Could not send email"] }, status: :unprocessable_entity
     end
   end
 
