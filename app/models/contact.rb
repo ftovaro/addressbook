@@ -11,7 +11,7 @@ class Contact < ApplicationRecord
 
   def self.list_organization_contacts org_id
     Firebase::Client.new(ENV['FIREBASE_URL'], ENV['FIREBASE_KEY']).
-                            get("contacts", orderBy: '"organization_id"', equalTo: "\"#{org_id}\"")
+                            get("contacts", orderBy: '"organization_id"', equalTo: org_id)
   end
 
   def self.create_contact contact, org_id
@@ -30,7 +30,7 @@ class Contact < ApplicationRecord
       return
     else
       firebase.update("contacts/#{contact_id}",
-                      self.format_contact(contact, org_id).delete_if { |k, v| v.empty? })
+                      self.format_contact(contact, org_id).delete_if { |k, v| (v.to_s).empty? })
     end
   end
 
