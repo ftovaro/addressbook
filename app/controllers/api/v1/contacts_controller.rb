@@ -2,7 +2,7 @@ module Api::V1
   class ContactsController < ApplicationController
   before_action :authenticate_api_v1_user!
   #Except for list because I do the validation inside method.
-  before_action :validate_user!, except: [:list]
+  before_action :validate_user!, except: [:list, :send_email]
 
   # GET /contacts
   def index
