@@ -46,7 +46,12 @@ module Api::V1
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_organization
-        @organization = Organization.find(params[:id])
+        begin
+          @organization = Organization.find(params[:id])
+        rescue ActiveRecord::RecordNotFound
+          render json: { status: 'error', errors: ["Organization not found"] },
+                 status: :not_found
+        end
       end
 
       # Only allow a trusted parameter "white list" through.
@@ -57,14 +62,14 @@ module Api::V1
       def authenticate_admin!
         unless current_api_v1_user.has_role?(:admin)
           render json: { status: 'error', errors: ["You are not allowed to manage organizations"] },
-                 status: :unprocessable_entity
+                 status: :unauthorized
         end
       end
 
       def validate_user!
         unless current_api_v1_user.organizations.ids.include? params[:id].to_i
           render json: { status: 'error', errors: ["You are not allowed to manage this organization"] },
-                 status: :unprocessable_entity
+                 status: :unauthorized
         end
       end
   end

@@ -68,7 +68,7 @@ module Api::V1
     def validate_user!
       unless current_api_v1_user.organizations.ids.include? params[:org_id].to_i
         render json: { status: 'error', errors: ["You are not allowed to manage contacts in this organization"] },
-               status: :unprocessable_entity
+               status: :unauthorized
       end
     end
   end

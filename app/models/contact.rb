@@ -4,7 +4,7 @@ class Contact < ApplicationRecord
     firebase = Firebase::Client.new(ENV['FIREBASE_URL'], ENV['FIREBASE_KEY'])
     response = []
     current_api_v1_user.organizations.ids.each do |id|
-      response << firebase.get("contacts", orderBy: '"organization_id"', equalTo: "\"#{id}\"").body
+      response << firebase.get("contacts", orderBy: '"organization_id"', equalTo: id).body
     end
     response
   end
@@ -44,7 +44,7 @@ class Contact < ApplicationRecord
       address: "#{contact[:address]}",
       phone: "#{contact[:phone]}",
       city: "#{contact[:city]}",
-      organization_id: org_id
+      organization_id: org_id.to_i
     }
   end
 end

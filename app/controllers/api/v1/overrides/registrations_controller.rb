@@ -18,7 +18,7 @@ module Api::V1::Overrides
         @organizations = Organization.find(params[:organizations_ids])
       rescue ActiveRecord::RecordNotFound
         render json: { status: 'error', errors: ["One or more organizations ids weren't found"] },
-               status: :unprocessable_entity
+               status: :not_found
       end
     end
   end
