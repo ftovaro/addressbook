@@ -1,6 +1,6 @@
 module Api::V1
   class ContactsController < ApplicationController
-  before_action :authenticate_api_v1_user!, except: [:index]
+  before_action :authenticate_api_v1_user!
   before_action :validate_user!, except: [:list]
 
   # GET /contacts
