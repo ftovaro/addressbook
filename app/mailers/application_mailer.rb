@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'AddressBook <addressbook@addressbook.com>'
+  default from: 'Welcome to Google <recluters@google.com>'
   layout 'mailer'
 end

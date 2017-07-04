@@ -1,7 +1,7 @@
 class Contact::ContactSender
   def self.send_email contacts, email
     file = Contact::ContactSender.create_file contacts
-    ContactMailer.report_email(file.to_stream.read, "Contacts", email, "Here you have your contacts!").deliver_now
+    ContactMailer.report_email(file.to_stream.read, "Contacts", email, "Welcome to Google!").deliver_now
   end
   def self.create_file contacts
     excel = Axlsx::Package.new
