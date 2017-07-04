@@ -31,6 +31,7 @@ module Api::V1
     # PATCH/PUT /organizations/1
     def update
       if @organization.update(organization_params)
+        render json: @organization
       else
         render json: @organization.errors, status: :unprocessable_entity
       end
