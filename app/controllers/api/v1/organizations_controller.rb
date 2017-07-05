@@ -22,7 +22,7 @@ module Api::V1
 
       if @organization.save
         @organization.assign_user current_api_v1_user
-        render json: @organization
+        render json: @organization, status: :created
       else
         render json: @organization.errors, status: :unprocessable_entity
       end
