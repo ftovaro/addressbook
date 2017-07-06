@@ -36,3 +36,7 @@ URL: `https://addressbook-strv.herokuapp.com/`
 ## Wiki ##
 
 Find more about this cool API and its endpoints [here](https://github.com/ftovaro/addressbook/wiki)
+
+## Bonus ##
+
+Don't forget to check the bonus endpoint in this API [here](https://github.com/ftovaro/addressbook/wiki/2.4.-Bonus)
