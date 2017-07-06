@@ -1,7 +1,7 @@
 [ ![Codeship Status for ftovaro/addressbook](https://app.codeship.com/projects/4541c4a0-41b6-0135-20c9-76e56c030005/status?branch=master)](https://app.codeship.com/projects/230119)
 
 ## AddressBook ##
-**AddressBook** is an API that let you create **organizations** where you can store **contacts**, this way you can easily connect with any client (e.g mobile app or front-end app) using this API and start managing your contacts the way God meant to be.
+**AddressBook** is an API where you can store **contacts** that belongs to an **organization**. You can easily connect with any client (e.g mobile app or front-end app) using this API and start managing your contacts the way God meant to be.
 
 You can also have **users** that controls your **contacts**, this way, not only the admin can manage contacts but only he can control organizations.
 
@@ -17,7 +17,7 @@ Once done, you can start the server with `rails s`
 
 One of the most cool features this API has is that we have two databases, one is **Postgres** where we store Organizations and Users, and we also have a dynamic database in **Firebase** where only contacts are stored.
 
-The reason behind this is that **contact** is the entity that will require more storage space, so this way we delegate that responsibility to Firebase where we can manipulate better with the database.
+The reason behind this is that **contact** is the entity that will require more storage space, so this way we delegate that responsibility to **Firebase**.
 
 ![diagram](https://github.com/ftovaro/addressbook/blob/master/doc/diagram_1.png)
 
