@@ -1,26 +1,42 @@
 [ ![Codeship Status for ftovaro/addressbook](https://app.codeship.com/projects/4541c4a0-41b6-0135-20c9-76e56c030005/status?branch=master)](https://app.codeship.com/projects/230119)
 
-# README
+## AddressBook ##
+**AddressBook** is an API where you can store **contacts** that belongs to an **organization**. You can easily connect with any client (e.g mobile app or front-end app) using this API and start managing your contacts the way God meant to be.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+You can also have **users** that controls your **contacts**, this way, not only the admin can manage contacts but only he can control organizations.
 
-Things you may want to cover:
+## Installation ##
 
-* Ruby version
+First of all, this app was created with **Ruby 2.4.0** and **Rails 5.0**. We use **Postgresql** as DB so get that ready before anything. 
 
-* System dependencies
+After you have cloned the project, go inside the folder a run `bundle install`, then `rails db:create db:migrate db:seed` as a single command to create the DB, run migrations and create an admin user, regular user and an organization to start with.
 
-* Configuration
+Once done, you can start the server with `rails s`
 
-* Database creation
+## App diagram ##
 
-* Database initialization
+One of the most cool features this API has is that we have two databases, one is **Postgres** where we store Organizations and Users, and we also have a dynamic database in **Firebase** where only contacts are stored.
 
-* How to run the test suite
+The reason behind this is that **contact** is the entity that will require more storage space, so this way we delegate that responsibility to **Firebase**.
 
-* Services (job queues, cache servers, search engines, etc.)
+![diagram](https://github.com/ftovaro/addressbook/blob/master/doc/diagram_1.png)
 
-* Deployment instructions
+## Testing ##
 
-* ...
+This project uses **Rspec** for testing, we have models, requests and routing tests, don't forget to check them out!.
+
+To run the test just get inside the project folder and run `rspec`
+
+## Deployment ##
+
+This API is currently online and deployed in **Heroku** and can be used by anybody. 
+
+URL: `https://addressbook-strv.herokuapp.com/`
+
+## Wiki ##
+
+Find more about this cool API and its endpoints [here](https://github.com/ftovaro/addressbook/wiki)
+
+## Bonus ##
+
+Don't forget to check the bonus endpoint in this API [here](https://github.com/ftovaro/addressbook/wiki/2.4.-Bonus)
