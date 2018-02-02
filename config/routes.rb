@@ -15,6 +15,10 @@ Rails.application.routes.draw do
 
       #Bonus
       post '/organization/send_contacts', to: 'contacts#send_email'
+
+      #Cards
+      get '/cards', to: 'cards#list'
+      post '/send_card', to: 'cards#send_email'
     end
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

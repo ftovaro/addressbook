@@ -63,6 +63,7 @@ class Contact < ApplicationRecord
       address: "#{contact[:address]}",
       phone: "#{contact[:phone]}",
       city: "#{contact[:city]}",
+      email: "#{contact[:email]}",
       organization_id: org_id.to_i
     }
   end
